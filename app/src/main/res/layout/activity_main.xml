@@ -21,10 +21,12 @@
 
     <com.lihb.library.indicator.CirclePageIndicator
         android:id="@+id/indicator"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:indicator_centered="true"
+        app:indicator_snap="false"
+        android:background="#DDFFAA"
         app:indicator_fillColor="@color/colorAccent"
         app:indicator_pageColor="@color/colorPrimary"
         app:indicator_radius="10dp" />

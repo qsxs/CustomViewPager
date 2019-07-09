@@ -23,9 +23,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -79,11 +81,11 @@ public class CirclePageIndicator extends View implements PageIndicator {
 
         //Load defaults from resources
 //        final Resources res = getResources();
-        final int defaultPageColor = 0x00000000;
-        final int defaultFillColor = 0xFFFFFFFF;
-        final int defaultOrientation = 0;
-        final int defaultStrokeColor = 0xFFDDDDDD;
-        final float defaultStrokeWidth = 1;
+        final int defaultPageColor = getThemeTextColorHint(context);
+        final int defaultFillColor = getThemeAccentColor(context);
+        final int defaultOrientation = HORIZONTAL;
+        final int defaultStrokeColor = getThemeTextColor(context);
+        final float defaultStrokeWidth = 0;
         final float defaultRadius = 3;
         final boolean defaultCentered = true;
         final boolean defaultSnap = false;
@@ -207,7 +209,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         }
 
         if (mCurrentPage >= count) {
-            setCurrentItem(count - 1);
+            setCurrentItem(mViewPager.getCurrentItem());
             return;
         }
 
@@ -231,7 +233,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         final float shortOffset = shortPaddingBefore + mRadius;
         float longOffset = longPaddingBefore + mRadius;
         if (mCentered) {
-            longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((count * threeRadius) / 2.0f);
+            longOffset += (longSize - longPaddingBefore - longPaddingAfter - count * 2 * mRadius - (count - 1) * mRadius) / 2.0f;
         }
 
         float dX;
@@ -283,7 +285,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         if (super.onTouchEvent(ev)) {
             return true;
         }
-        if ((mViewPager == null) || (mViewPager.getAdapter().getCount() == 0)) {
+        if ((mViewPager == null) || mViewPager.getAdapter() == null || mViewPager.getAdapter().getCount() == 0) {
             return false;
         }
 
@@ -368,7 +370,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             return;
         }
         if (mViewPager != null) {
-            mViewPager.clearOnPageChangeListeners();
+            mViewPager.removeOnPageChangeListener(this);
         }
         if (view.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
@@ -396,6 +398,8 @@ public class CirclePageIndicator extends View implements PageIndicator {
 
     @Override
     public void notifyDataSetChanged() {
+        mCurrentPage = mViewPager.getCurrentItem();
+        mSnapPage = mViewPager.getCurrentItem();
         invalidate();
     }
 
@@ -462,7 +466,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
-        if ((specMode == MeasureSpec.EXACTLY) || (mViewPager == null)) {
+        if ((specMode == MeasureSpec.EXACTLY) || (mViewPager == null) || mViewPager.getAdapter() == null) {
             //We were told how big to be
             result = specSize;
         } else {
@@ -549,5 +553,44 @@ public class CirclePageIndicator extends View implements PageIndicator {
             super.writeToParcel(dest, flags);
             dest.writeInt(currentPage);
         }
+    }
+
+    private static int getThemeAccentColor(Context context) {
+        int colorAttr;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            colorAttr = android.R.attr.colorAccent;
+        } else {
+            //Get colorAccent defined for AppCompat
+            colorAttr = context.getResources().getIdentifier("colorAccent", "attr", context.getPackageName());
+        }
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(colorAttr, outValue, true);
+        return outValue.data;
+    }
+
+    private static int getThemeTextColorHint(Context context) {
+        int colorAttr;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        colorAttr = android.R.attr.textColorHint;
+//        } else {
+//            //Get colorAccent defined for AppCompat
+//            colorAttr = context.getResources().getIdentifier("colorAccent", "attr", context.getPackageName());
+//        }
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(colorAttr, outValue, true);
+        return outValue.data;
+    }
+
+    private static int getThemeTextColor(Context context) {
+        int colorAttr;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        colorAttr = android.R.attr.textColor;
+//        } else {
+//            //Get colorAccent defined for AppCompat
+//            colorAttr = context.getResources().getIdentifier("colorAccent", "attr", context.getPackageName());
+//        }
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(colorAttr, outValue, true);
+        return outValue.data;
     }
 }

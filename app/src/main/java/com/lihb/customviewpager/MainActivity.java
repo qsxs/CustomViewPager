@@ -26,10 +26,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         indicator = findViewById(R.id.indicator);
         vp = findViewById(R.id.vp);
-        vp.setAdapter(new PagerAdapter() {
+        vp.setAdapter(getAdapter(3));
+        btn = findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vp.setCanScroll(!vp.isCanScroll());
+//                vp.setAdapter(null);
+                indicator.notifyDataSetChanged();
+                Toast.makeText(MainActivity.this, "isCanScroll:" + vp.isCanScroll(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        indicator.setViewPager(vp);
+    }
+
+    private PagerAdapter getAdapter(final int size) {
+        return new PagerAdapter() {
             @Override
             public int getCount() {
-                return 3;
+                return size;
             }
 
             @Override
@@ -47,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 TextView tv = new TextView(container.getContext());
                 tv.setText("pager " + position);
-                if (position == 0) {
+                if (position%3 == 0) {
                     tv.setBackgroundColor(Color.BLUE);
-                } else if (position == 1) {
+                } else if (position%3 == 1) {
                     tv.setBackgroundColor(Color.YELLOW);
                 } else {
                     tv.setBackgroundColor(Color.GREEN);
@@ -57,15 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 container.addView(tv);
                 return tv;
             }
-        });
-        btn = findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vp.setCanScroll(!vp.isCanScroll());
-                Toast.makeText(MainActivity.this, "isCanScroll:" + vp.isCanScroll(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        indicator.setViewPager(vp);
+        };
     }
 }
