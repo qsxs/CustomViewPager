@@ -2,18 +2,21 @@ package com.lihb.customviewpager;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.lihb.library.CustomViewPager;
+import com.lihb.library.indicator.CirclePageIndicator;
 
 public class MainActivity extends AppCompatActivity {
+    private CirclePageIndicator indicator;
     private CustomViewPager vp;
     private Button btn;
 
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        indicator = findViewById(R.id.indicator);
         vp = findViewById(R.id.vp);
         vp.setAdapter(new PagerAdapter() {
             @Override
@@ -62,5 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "isCanScroll:" + vp.isCanScroll(), Toast.LENGTH_SHORT).show();
             }
         });
+        indicator.setViewPager(vp);
     }
 }

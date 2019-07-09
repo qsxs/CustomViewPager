@@ -16,7 +16,17 @@
     <com.lihb.library.CustomViewPager
         android:id="@+id/vp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         app:canScroll="true" />
+
+    <com.lihb.library.indicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:indicator_centered="true"
+        app:indicator_fillColor="@color/colorAccent"
+        app:indicator_pageColor="@color/colorPrimary"
+        app:indicator_radius="10dp" />
 
 </LinearLayout>
