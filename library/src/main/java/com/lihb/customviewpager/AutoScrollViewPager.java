@@ -1,4 +1,4 @@
-package com.lihb.library;
+package com.lihb.customviewpager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -12,8 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.lihb.library.CustomViewPager;
-import com.lihb.library.indicator.CirclePageIndicator;
+import com.lihb.customviewpager.indicator.CirclePageIndicator;
 
 public class MainActivity extends AppCompatActivity {
     private CirclePageIndicator indicator;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.lihb.library.indicator;
+package com.lihb.customviewpager.indicator;
 
 
 import androidx.viewpager.widget.ViewPager;

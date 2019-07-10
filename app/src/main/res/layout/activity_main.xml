@@ -13,13 +13,13 @@
         android:layout_height="wrap_content"
         android:text="切换" />
 
-    <com.lihb.library.CustomViewPager
+    <com.lihb.customviewpager.CustomViewPager
         android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:canScroll="true" />
 
-    <com.lihb.library.indicator.CirclePageIndicator
+    <com.lihb.customviewpager.indicator.CirclePageIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

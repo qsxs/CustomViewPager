@@ -1,4 +1,4 @@
-package com.lihb.library;
+package com.lihb.customviewpager;
 
 import android.content.Context;
 import android.content.res.TypedArray;
